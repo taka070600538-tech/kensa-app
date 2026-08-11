@@ -133,7 +133,8 @@ export function renderSettingsView(container) {
       if (!confirm(`${data.records.length}件を取り込みます。現在の${current}件は置き換えられます。よろしいですか？`)) return;
       saveRecords(localStorage, data.records);
       if (data.settings) saveSettings(localStorage, data.settings);
-      fileMessage.textContent = `${data.records.length}件を取り込みました。`;
+      renderSettingsView(container);
+      container.querySelector('#file-backup-message').textContent = `${data.records.length}件を取り込みました。`;
     } catch {
       fileMessage.textContent = 'ファイルの形式が正しくありません。';
     }
