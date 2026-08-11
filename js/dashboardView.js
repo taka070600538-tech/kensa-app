@@ -4,6 +4,7 @@ import { buildComments } from './comments.js';
 import { loadRecords, latestRecord } from './records.js';
 import { loadSettings } from './settings.js';
 import { calcAge } from './calc.js';
+import { escapeHtml } from './html.js';
 
 const BADGE = {
   normal: '<span class="badge badge-normal">基準内</span>',
@@ -53,7 +54,7 @@ export function renderDashboardView(container) {
   const meta = [
     `検査日: ${latest.date}`,
     age != null ? `満年齢: ${age} 歳` : null,
-    latest.facility ? `受診施設: ${latest.facility}` : null,
+    latest.facility ? `受診施設: ${escapeHtml(latest.facility)}` : null,
     latest.postMealHours != null ? `食後 ${latest.postMealHours} 時間` : '空腹時',
   ].filter(Boolean).join(' ／ ');
 
@@ -67,8 +68,8 @@ export function renderDashboardView(container) {
   const treatment = (latest.currentTreatment || latest.newTreatment) ? `
     <section class="panel">
       <h2 class="panel-title">治療状況・指示事項</h2>
-      ${latest.currentTreatment ? `<p class="panel-note"><strong>現治療・処方:</strong> ${latest.currentTreatment}</p>` : ''}
-      ${latest.newTreatment ? `<p class="panel-note"><strong>変更後治療・指示:</strong> ${latest.newTreatment}</p>` : ''}
+      ${latest.currentTreatment ? `<p class="panel-note"><strong>現治療・処方:</strong> ${escapeHtml(latest.currentTreatment)}</p>` : ''}
+      ${latest.newTreatment ? `<p class="panel-note"><strong>変更後治療・指示:</strong> ${escapeHtml(latest.newTreatment)}</p>` : ''}
     </section>` : '';
 
   container.innerHTML = `
@@ -82,6 +83,6 @@ export function renderDashboardView(container) {
     </section>
     ${sections}
     ${treatment}
-    ${latest.memo ? `<section class="panel"><h2 class="panel-title">備考・メモ</h2><p class="panel-note">${latest.memo}</p></section>` : ''}
+    ${latest.memo ? `<section class="panel"><h2 class="panel-title">備考・メモ</h2><p class="panel-note">${escapeHtml(latest.memo)}</p></section>` : ''}
   `;
 }
