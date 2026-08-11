@@ -46,15 +46,11 @@ export function renderSettingsView(container) {
       <button type="button" class="save-btn ghost-btn" id="reset-references">基準値を初期値に戻す</button>
       <p class="save-message" id="settings-message" role="status"></p>
     </section>
-    <section class="panel">
-      <h2 class="panel-title">データについて</h2>
-      <p class="panel-note">記録はこの端末(ブラウザ)に保存され、1日1回GitHubにも自動バックアップされます。
-      機種変更のときは、新しい端末でトークンを設定して「GitHubから復元」してください。</p>
-    </section>
     <section class="panel" id="backup-section"></section>
+    <section class="panel" id="token-section"></section>
     <section class="panel">
-      <h2 class="panel-title">ファイルへのバックアップ</h2>
-      <p class="panel-note">記録と設定をJSONファイルに書き出したり、ファイルから復元したりできます。</p>
+      <h2 class="panel-title">インポート・エクスポート</h2>
+      <p class="panel-note">アプリのデータをJSONファイルに書き出したり、ファイルから取り込んだりできます。</p>
       <button type="button" class="save-btn" id="export-file-btn">ファイルにエクスポート</button>
       <button type="button" class="save-btn ghost-btn" id="import-file-btn">ファイルからインポート</button>
       <input type="file" id="import-file-input" accept="application/json" hidden>
@@ -140,11 +136,15 @@ export function renderSettingsView(container) {
     }
   });
 
-  // GitHubバックアップUI(app-sync)
+  // GitHubバックアップUI(app-sync)。描画順を固定するためrenderBackupControls/renderTokenSettingsを個別に呼ぶ
   import('https://taka070600538-tech.github.io/app-sync/v1/sync.js')
-    .then((sync) => sync.renderSyncSettings($('backup-section')))
+    .then((sync) => {
+      sync.renderBackupControls($('backup-section'));
+      sync.renderTokenSettings($('token-section'));
+    })
     .catch(() => {
-      $('backup-section').innerHTML =
-        '<p class="panel-note">バックアップ機能は現在利用できません(オフラインの可能性)。</p>';
+      const message = '<p class="panel-note">GitHubバックアップ機能は現在利用できません(オフラインの可能性)。</p>';
+      $('backup-section').innerHTML = message;
+      $('token-section').innerHTML = message;
     });
 }
