@@ -32,6 +32,10 @@ export function refLinesFor(ref) {
 
 // 折れ線グラフのSVG文字列を生成する(DOM非依存の純関数)。
 export function buildChartSvg({ points, refLines = [], unit = '', width = 360, height = 240 }) {
+  // データ・基準線とも0件の場合は座標計算(NaN)を避け、空のSVGを返す。
+  if (!points.length && !refLines.length) {
+    return `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img" class="trend-chart"></svg>`;
+  }
   const pad = { top: 14, right: 12, bottom: 34, left: 46 };
   const plotW = width - pad.left - pad.right;
   const plotH = height - pad.top - pad.bottom;

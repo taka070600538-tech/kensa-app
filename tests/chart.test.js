@@ -43,3 +43,16 @@ test('buildChartSvg: データ1点でも壊れない', () => {
   assert.ok(svg.includes('<circle'));
   assert.ok(!svg.includes('NaN'));
 });
+
+test('buildChartSvg: 0点(データ・基準線ともなし)でもNaNを含まない', () => {
+  const svg = buildChartSvg({ points: [], refLines: [], unit: '' });
+  assert.ok(svg.startsWith('<svg'));
+  assert.ok(!svg.includes('NaN'));
+  assert.ok(!svg.includes('<circle'));
+});
+
+test('buildChartSvg: 0点でも基準線があればNaNを含まない', () => {
+  const svg = buildChartSvg({ points: [], refLines: refLinesFor(DEFAULT_REFERENCES.ldl), unit: 'mg/dL' });
+  assert.ok(!svg.includes('NaN'));
+  assert.equal([...svg.matchAll(/stroke-dasharray/g)].length, 2);
+});
