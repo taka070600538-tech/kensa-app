@@ -8,7 +8,7 @@ import { pathToFileURL } from 'node:url';
 const START = '<!-- kensa-app:start -->';
 const END = '<!-- kensa-app:end -->';
 const DEFAULT_BACKUP = String.raw`D:\Obsidian Vault for Claude Code\Git\app-data\kensa-app\backup.json`;
-const DEFAULT_DIARY_DIR = String.raw`D:\Obsidian Vault for Claude Code\01_原油`;
+const DEFAULT_DIARY_DIR = String.raw`D:\Obsidian Vault for Claude Code\01-NOTE`;
 
 export function todayString(now = new Date()) {
   const y = now.getFullYear();
